@@ -1,9 +1,16 @@
 import { useState } from "react"
 import DailyJournal from "../components/DailyJournal"
 
+// Determine the base URL for API calls
+const API_BASE_URL = process.env.NODE_ENV === 'development'
+    ? "http://localhost:5000"
+    : "https://call-journal.onrender.com";
+
 function Home() {
     const [customerNumber, setCustomerNumber] = useState("")
     const [customerName, setCustomerName] = useState("")
+    const [callId, setCallId] = useState("")
+    const [conversation, setConversation] = useState([])
 
     const handleCall = async () => {
         // Validate that the customer number starts with +91
@@ -13,7 +20,7 @@ function Home() {
         }
 
         try {
-            const response = await fetch("http://localhost:5000/make-call", {
+            const response = await fetch(`${API_BASE_URL}/make-call`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -24,6 +31,36 @@ function Home() {
             const data = await response.json()
             if (data.success) {
                 alert("Call initiated successfully!")
+                setCallId(data.data.id)
+            } else {
+                alert(`Error: ${data.error}`)
+            }
+        } catch (error) {
+            alert(`Error: ${error.message}`)
+        }
+    }
+
+    const fetchCallDetails = async () => {
+        if (!callId) {
+            alert("Please enter a call ID.")
+            return
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/call/${callId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            const data = await response.json()
+            if (data.success) {
+                const messages = data.data.messages.map((msg) => ({
+                    role: msg.role,
+                    message: msg.message,
+                }))
+                setConversation(messages)
             } else {
                 alert(`Error: ${data.error}`)
             }
@@ -57,6 +94,31 @@ function Home() {
                 >
                     Make Call
                 </button>
+                {callId && (
+                    <div className="text-gray-800 dark:text-white">
+                        <strong>Call ID:</strong> {callId}
+                    </div>
+                )}
+                <input
+                    type="text"
+                    placeholder="Enter call ID"
+                    value={callId}
+                    onChange={(e) => setCallId(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                />
+                <button
+                    onClick={fetchCallDetails}
+                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                >
+                    Get Call Summary
+                </button>
+                <div className="space-y-2">
+                    {conversation.map((msg, index) => (
+                        <div key={index} className="text-gray-800 dark:text-white">
+                            <strong>{msg.role}:</strong> {msg.message}
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )
