@@ -46,6 +46,28 @@ app.post("/make-call", async (req, res) => {
 
         const body = await response.json();
         res.json({ success: true, data: body });
+        console.log("Call initiated successfully!");
+        console.log(body);
+
+    } catch (error) {
+        console.error("Error making call:", error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.get("/call/:id", async (req, res) => {
+    const callId = req.params.id;
+
+    try {
+        const response = await fetch(`https://api.vapi.ai/call/${callId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${VAPI_API_KEY}`,
+            }
+        });
+
+        const body = await response.json();
+        res.json({ success: true, data: body });
 
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
