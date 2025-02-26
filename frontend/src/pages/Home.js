@@ -1,4 +1,5 @@
-import { useState } from "react"
+import React, { useState, useContext } from "react"
+import { UserContext } from "../context/UserContext"
 import DailyJournal from "../components/DailyJournal"
 
 // Determine the base URL for API calls
@@ -11,6 +12,7 @@ function Home() {
     const [customerName, setCustomerName] = useState("")
     const [callId, setCallId] = useState("")
     const [conversation, setConversation] = useState([])
+    const { user } = useContext(UserContext);
 
     const handleCall = async () => {
         // Validate that the customer number starts with +91
@@ -51,6 +53,7 @@ function Home() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "x-google-id": user.googleId,
                 },
             })
 
@@ -73,6 +76,7 @@ function Home() {
         <div className="space-y-6">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Daily Journal</h1>
             <DailyJournal />
+            {user && <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Hey {user.name}! Lets make a call for your daily journal</h1>}
             <div className="space-y-4">
                 <input
                     type="text"
