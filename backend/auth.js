@@ -15,7 +15,12 @@ authRouter.use(session({
     secret: "yourSecretKey",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' }
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: 'None',
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
 }));
 
 // 🔹 Initialize Passport
