@@ -53,7 +53,7 @@ authRouter.get("/auth/google",
 );
 
 authRouter.get("/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/" }),
+    passport.authenticate("google", { failureRedirect: "/login" }),
     (req, res) => {
         if (process.env.NODE_ENV === 'development') {
             res.redirect("http://localhost:3000/");
