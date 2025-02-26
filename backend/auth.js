@@ -6,7 +6,9 @@ const { Strategy } = require("passport-google-oauth20");
 const User = require("./models/User");
 
 const authRouter = express.Router();
-
+const API_BASE_URL = process.env.NODE_ENV === 'development'
+    ? "http://localhost:5000"
+    : "https://call-journal.onrender.com";
 // 🔹 Session setup
 authRouter.use(session({
     secret: "yourSecretKey",
@@ -23,7 +25,7 @@ authRouter.use(passport.session());
 passport.use(new Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:5000/auth/google/callback"
+    callbackURL: `${API_BASE_URL}/auth/google/callback`
 }, async (accessToken, refreshToken, profile, done) => {
     let user = await User.findOne({ googleId: profile.id });
 
@@ -53,7 +55,11 @@ authRouter.get("/auth/google",
 authRouter.get("/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
-        res.redirect("http://localhost:3000/");
+        if (process.env.NODE_ENV === 'development') {
+            res.redirect("http://localhost:3000/");
+        } else {
+            res.redirect("https://call-journal.vercel.app/");
+        }
     }
 );
 
