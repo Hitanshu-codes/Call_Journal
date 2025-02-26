@@ -4,9 +4,12 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const API_BASE_URL = process.env.NODE_ENV === 'development'
+        ? "http://localhost:5000"
+        : "https://call-journal.onrender.com";
 
     useEffect(() => {
-        fetch("http://localhost:5000/auth/user", { credentials: "include" })
+        fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
             .then(res => res.json())
             .then(data => setUser(data));
     }, []);

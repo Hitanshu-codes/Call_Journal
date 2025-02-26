@@ -12,15 +12,19 @@ import "./index.css"
 
 function App() {
   const [user, setUser] = useState(null)
+  const API_BASE_URL = process.env.NODE_ENV === 'development'
+    ? "http://localhost:5000"
+    : "https://call-journal.onrender.com";
+  console.log(API_BASE_URL)
 
   useEffect(() => {
-    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+    fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
       .then(res => res.json())
       .then(data => setUser(data))
-  }, [])
+  }, [API_BASE_URL])
 
   const logout = () => {
-    window.location.href = "http://localhost:3000/login"
+    window.location.href = `${API_BASE_URL}/login`
   }
 
   const ProtectedRoute = ({ children }) => {
