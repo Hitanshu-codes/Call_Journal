@@ -9,17 +9,12 @@ const Call = require("./models/Call");
 const authRouter = require("./auth"); // Import the auth router
 
 const app = express();
-if (process.env.NODE_ENV === 'development') {
-    app.use(cors({
-        origin: 'http://localhost:3000', // Allow requests from this origin
-        credentials: true // Allow cookies to be sent
-    }));
-} else {
-    app.use(cors({
-        origin: 'https://call-journal.vercel.app', // Allow requests from this origin
-        credentials: true // Allow cookies to be sent
-    }));
-}
+
+app.use(cors({
+    origin: 'https://call-journal.vercel.app', // Allow requests from this origin
+    credentials: true // Allow cookies to be sent
+}));
+
 app.use(express.json()); // To parse JSON bodies
 
 connectDB();
