@@ -6,19 +6,13 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const API_BASE_URL = process.env.NODE_ENV === 'development'
         ? "http://localhost:5000"
-        : "https://call-journal.onrender.com";
+        : "https://call-journal.onrender.com"; // Production URL
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
-            .then(res => {
-                console.log("Response status:", res.status);
-                return res.json();
-            })
-            .then(data => {
-                console.log("Fetched user data:", data);
-                setUser(data);
-            });
-    }, []);
+            .then(res => res.json())
+            .then(data => setUser(data));
+    }, [API_BASE_URL]);
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

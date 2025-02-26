@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
-const API_BASE_URL = process.env.NODE_ENV === 'development'
-    ? "http://localhost:5000"
-    : "https://call-journal.onrender.com";
-
 
 function Login() {
     const [user, setUser] = useState(null);
+    const API_BASE_URL = process.env.NODE_ENV === 'development'
+        ? "http://localhost:5000"
+        : "https://call-journal.onrender.com"; // Production URL
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
             .then(res => res.json())
             .then(data => setUser(data));
-    }, []);
+    }, [API_BASE_URL]);
 
     const login = () => {
-        window.location.href = `${API_BASE_URL}/auth/google`;
+        window.location.href = `${API_BASE_URL}/auth/google`; // Use production URL
     };
 
     const logout = () => {
-        window.location.href = `${API_BASE_URL}/auth/logout`;
+        window.location.href = `${API_BASE_URL}/auth/logout`; // Use production URL
     };
 
     return (

@@ -15,16 +15,28 @@ function App() {
   const API_BASE_URL = process.env.NODE_ENV === 'development'
     ? "http://localhost:5000"
     : "https://call-journal.onrender.com";
-  console.log(API_BASE_URL)
+
+  console.log("API Base URL:", API_BASE_URL);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
-      .then(res => res.json())
-      .then(data => setUser(data))
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Fetched user data:", data);
+        setUser(data);
+      })
+      .catch(error => {
+        console.error("Error fetching user data:", error);
+      });
   }, [API_BASE_URL])
 
   const logout = () => {
-    window.location.href = `${API_BASE_URL}/login`
+    window.location.href = `${API_BASE_URL}/auth/logout`;
   }
 
   const ProtectedRoute = ({ children }) => {
