@@ -37,14 +37,22 @@ passport.use(new Strategy({
             email: profile.emails[0].value
         });
         await user.save();
+        console.log("New user created:", user);
+    } else {
+        console.log("Existing user found:", user);
     }
 
     return done(null, user);
 }));
 
-passport.serializeUser((user, done) => done(null, user.id));
+passport.serializeUser((user, done) => {
+    console.log("Serializing user:", user);
+    done(null, user.id);
+});
+
 passport.deserializeUser(async (id, done) => {
     const user = await User.findById(id);
+    console.log("Deserialized user:", user);
     done(null, user);
 });
 
