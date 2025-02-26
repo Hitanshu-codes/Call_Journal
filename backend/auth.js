@@ -63,12 +63,16 @@ passport.deserializeUser(async (id, done) => {
 
 // 🔹 Google Auth Routes
 authRouter.get("/auth/google",
-    passport.authenticate("google", { scope: ["profile", "email"] })
+    passport.authenticate("google", { scope: ["profile", "email"] }),
+    (req, res) => {
+        console.log("Redirecting to Google for authentication");
+    }
 );
 
 authRouter.get("/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
+        console.log("User authenticated successfully");
         res.redirect("https://call-journal.vercel.app/");
     }
 );
