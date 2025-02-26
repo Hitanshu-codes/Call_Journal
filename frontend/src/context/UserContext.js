@@ -10,8 +10,14 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
-            .then(res => res.json())
-            .then(data => setUser(data));
+            .then(res => {
+                console.log("Response status:", res.status);
+                return res.json();
+            })
+            .then(data => {
+                console.log("Fetched user data:", data);
+                setUser(data);
+            });
     }, []);
 
     return (

@@ -9,12 +9,17 @@ const authRouter = express.Router();
 const API_BASE_URL = process.env.NODE_ENV === 'development'
     ? "http://localhost:5000"
     : "https://call-journal.onrender.com";
+console.log("auth.js", API_BASE_URL);
 // 🔹 Session setup
 authRouter.use(session({
     secret: "yourSecretKey",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: {
+        secure: true, // Use secure cookies in production
+        httpOnly: true, // Helps prevent cross-site scripting attacks
+        sameSite: 'lax' // Helps prevent CSRF attacks
+    }
 }));
 
 // 🔹 Initialize Passport
