@@ -16,7 +16,7 @@ authRouter.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         httpOnly: true,
         sameSite: 'None',
         maxAge: 24 * 60 * 60 * 1000 // 1 day
@@ -82,6 +82,7 @@ authRouter.get("/auth/logout", (req, res) => {
 
 // 🔹 Get Logged-in User
 authRouter.get("/auth/user", (req, res) => {
+    console.log("User request received:", req.user);
     res.json(req.user || null);
 });
 
