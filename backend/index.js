@@ -9,6 +9,7 @@ const Call = require("./models/Call");
 const authRouter = require("./auth"); // Import the auth router
 
 const app = express();
+console.log("NODE_ENV:", process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
     app.use(cors({
         origin: 'http://localhost:3000', // Allow requests from this origin
