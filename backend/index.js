@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json()); // To parse JSON bodies
+app.set("trust proxy", 1); // Fixes issues with cookies behind proxies
 
 connectDB();
 

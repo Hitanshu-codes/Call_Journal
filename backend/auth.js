@@ -15,6 +15,10 @@ authRouter.use(session({
     secret: "yourSecretKey",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI, // Use your MongoDB connection string
+        collectionName: "sessions",
+    }),
     cookie: {
         secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
         httpOnly: true,
