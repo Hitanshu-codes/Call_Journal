@@ -16,10 +16,10 @@ authRouter.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: true,
+        secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
         httpOnly: true,
-        sameSite: 'Lax',
-        maxAge: 24 * 60 * 60 * 1000
+        sameSite: "None", // Allow cross-origin cookies
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
     }
 }));
 
