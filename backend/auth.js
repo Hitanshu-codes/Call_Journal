@@ -14,15 +14,19 @@ console.log("auth.js", API_BASE_URL);
 authRouter.use(session({
     secret: "yourSecretKey",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-        secure: false,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'Lax',
+        maxAge: 24 * 60 * 60 * 1000
     }
 }));
 
 // 🔹 Initialize Passport
 authRouter.use(passport.initialize());
 authRouter.use(passport.session());
+
 
 // 🔹 Google OAuth Strategy
 passport.use(new Strategy({
