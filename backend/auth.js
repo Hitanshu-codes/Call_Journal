@@ -16,10 +16,7 @@ authRouter.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: true,
-        httpOnly: true,
-        sameSite: 'None',
-        maxAge: 24 * 60 * 60 * 1000 // 1 day
+        secure: false,
     }
 }));
 
@@ -31,7 +28,7 @@ authRouter.use(passport.session());
 passport.use(new Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://call-journal.onrender.com/auth/google/callback"
+    callbackURL: `${API_BASE_URL}/auth/google/callback`
 }, async (accessToken, refreshToken, profile, done) => {
     let user = await User.findOne({ googleId: profile.id });
 
@@ -73,7 +70,11 @@ authRouter.get("/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
         console.log("User authenticated successfully");
-        res.redirect("https://call-journal.vercel.app/");
+        if (process.env.NODE_ENV === 'development') {
+            res.redirect("http://localhost:3000/");
+        } else {
+            res.redirect("https://call-journal.vercel.app/");
+        }
     }
 );
 

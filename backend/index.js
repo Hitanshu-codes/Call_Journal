@@ -11,7 +11,7 @@ const authRouter = require("./auth"); // Import the auth router
 const app = express();
 
 app.use(cors({
-    origin: 'https://call-journal.vercel.app', // Allow requests from this origin
+    origin: 'http://localhost:3000', // Allow requests from this origin
     credentials: true // Allow cookies to be sent
 }));
 

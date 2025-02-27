@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 
+
 function Login() {
     const [user, setUser] = useState(null);
     const API_BASE_URL = process.env.NODE_ENV === 'development'
         ? "http://localhost:5000"
         : "https://call-journal.onrender.com"; // Production URL
-
+    console.log("API_BASE_URL: from login.js", API_BASE_URL);
     useEffect(() => {
         fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
-            .then(res => res.json())
-            .then(data => setUser(data));
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => setUser(data))
+            .catch(error => console.error("Fetch error:", error)); // Log the error
     }, [API_BASE_URL]);
 
     const login = () => {

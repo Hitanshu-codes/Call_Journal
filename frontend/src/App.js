@@ -16,7 +16,7 @@ function App() {
     ? "http://localhost:5000"
     : "https://call-journal.onrender.com";
 
-  console.log("API Base URL:", API_BASE_URL);
+  console.log("API Base URL:from app.js", API_BASE_URL);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
