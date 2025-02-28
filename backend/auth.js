@@ -99,7 +99,7 @@ authRouter.get("/auth/google/callback",
 // 🔹 Logout Route
 const CLIENT_URL = process.env.NODE_ENV === 'development'
     ? "http://localhost:3000"
-    : "https://call-journal.vercel.com";
+    : "https://call-journal.vercel.app";
 authRouter.get("/auth/logout", (req, res) => {
     req.logout(() => {
         res.redirect(CLIENT_URL);
