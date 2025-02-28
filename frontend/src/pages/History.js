@@ -50,7 +50,7 @@ function History() {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>; // Show loading state
+        return <div className="flex justify-center items-center h-screen text-white">Loading...</div>; // Show loading state
     }
 
     if (error) {
@@ -61,7 +61,7 @@ function History() {
         <div className="space-y-6">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Call History</h1>
             {entries.length === 0 ? (
-                <p>No calls found.</p> // Message when no calls are available
+                <p className="text-gray-700 dark:text-gray-300 text-left text-xl">No calls found.</p> // Message when no calls are available
             ) : (
                 entries.map((entry, index) => (
                     <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">

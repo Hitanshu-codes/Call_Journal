@@ -97,9 +97,12 @@ authRouter.get("/auth/google/callback",
 );
 
 // 🔹 Logout Route
+const CLIENT_URL = process.env.NODE_ENV === 'development'
+    ? "http://localhost:3000"
+    : "https://call-journal.onrender.com";
 authRouter.get("/auth/logout", (req, res) => {
     req.logout(() => {
-        res.redirect("/");
+        res.redirect(CLIENT_URL);
     });
 });
 
