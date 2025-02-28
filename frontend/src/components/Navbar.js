@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import logo from "../assets/call journal transparent.png"
+import logo from "../assets/2.png"
 function Navbar({ user, logout }) {
     return (
         <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -7,7 +7,7 @@ function Navbar({ user, logout }) {
 
                 <Link to="/" className="text-xl font-bold text-gray-800 dark:text-white pl-0">
                     <div className="flex items-center gap-2">
-                        <img src={logo} alt="Call Journal" className="w-8 h-8 pr-2 m-0" />
+                        <img src={logo} alt="Call Journal" className="w-9 h-7 pr-2 m-0" />
                         <h1>Call Journal</h1>
                     </div>
 
