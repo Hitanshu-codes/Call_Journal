@@ -50,14 +50,33 @@ app.put("/users/:id/settings", async (req, res) => {
 });
 
 app.post("/calls", async (req, res) => {
-    const { userId, callId, duration, transcript, phoneNumber } = req.body;
+    const { userId, callId, duration, transcript, phoneNumber, gratitude, negatives, positives, overallDay, keyLearnings } = req.body;
+
     // Ensure userId is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ success: false, error: "Invalid user ID" });
     }
-    const call = new Call({ userId, callId, duration, transcript, phoneNumber });
-    await call.save();
-    res.json(call);
+
+    // const call = new Call({
+    //     userId,
+    //     callId,
+    //     duration,
+    //     transcript,
+    //     phoneNumber,
+    //     gratitude,
+    //     negatives,
+    //     positives,
+    //     overallDay,
+    //     keyLearnings
+    // });
+
+    try {
+        // await call.save();
+        res.status(201).json(call); // Respond with the saved call
+    } catch (error) {
+        console.error("Error saving call:", error);
+        res.status(500).json({ success: false, error: "Failed to save call" });
+    }
 });
 
 app.get("/users/:id/calls", async (req, res) => {
@@ -140,13 +159,18 @@ app.get("/call/:id", async (req, res) => {
         });
 
         const body = await response.json();
-        // console.log("Response body:", body);
+        console.log("Response body: of user", userId, body);
 
         // Check if the call details were successfully retrieved
         if (body.status === "ended") {
             // Extract necessary details from the response
-            const { id, transcript, customer, startedAt, endedAt } = body;
+            const { id, transcript, customer, startedAt, endedAt, analysis } = body;
             const duration = new Date(endedAt) - new Date(startedAt); // Calculate duration in milliseconds
+            const gratitude = analysis.structuredData.Gratitude;
+            const negatives = analysis.structuredData.Negatives;
+            const positives = analysis.structuredData.Positives;
+            const overallDay = analysis.structuredData.Overall_Day;
+            const keyLearnings = analysis.structuredData.Key_Learnings;
 
             // Save the call details to the database
             const call = new Call({
@@ -154,7 +178,12 @@ app.get("/call/:id", async (req, res) => {
                 callId: id,
                 duration: Math.floor(duration / 1000), // Convert to seconds
                 transcript: transcript,
-                phoneNumber: customer.number
+                phoneNumber: customer.number,
+                gratitude: gratitude,
+                negatives: negatives,
+                positives: positives,
+                overallDay: overallDay,
+                keyLearnings: keyLearnings
             });
             await call.save();
             console.log("Call saved to database:", call);

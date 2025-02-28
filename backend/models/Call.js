@@ -6,7 +6,12 @@ const CallSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
     duration: { type: Number, required: true }, // in seconds
     transcript: { type: String, default: "" },
-    phoneNumber: { type: String, required: true }
+    phoneNumber: { type: String, required: true },
+    gratitude: { type: String, default: "" },
+    negatives: { type: String, default: "" },
+    positives: { type: String, default: "" },
+    overallDay: { type: String, default: "" },
+    keyLearnings: { type: String, default: "" }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Call", CallSchema);

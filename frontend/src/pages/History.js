@@ -77,6 +77,41 @@ function History() {
                         <p className="text-gray-700 dark:text-gray-300">
                             <strong>Phone Number:</strong> {entry.phoneNumber}
                         </p>
+
+                        {/* Display structured data in a table */}
+                        <div className="mt-4">
+                            <h3 className="text-lg font-semibold text-white">Highlights</h3>
+                            <table className="min-w-full border-collapse border border-gray-300">
+                                <thead>
+                                    <tr>
+                                        <th className="border border-gray-300 px-4 py-2 text-white">Aspect</th>
+                                        <th className="border border-gray-300 px-4 py-2 text-white">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className="border border-gray-300 px-4 py-2 text-white"><strong>Gratitude:</strong></td>
+                                        <td className="border border-gray-300 px-4 py-2 text-white">{entry.gratitude || 'No gratitude mentioned'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border border-gray-300 px-4 py-2 text-white"><strong>Negatives:</strong></td>
+                                        <td className="border border-gray-300 px-4 py-2 text-white">{entry.negatives || 'No negatives mentioned'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border border-gray-300 px-4 py-2 text-white"><strong>Positives:</strong></td>
+                                        <td className="border border-gray-300 px-4 py-2 text-white">{entry.positives || 'No positives mentioned'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border border-gray-300 px-4 py-2 text-white"><strong>Overall Day:</strong></td>
+                                        <td className="border border-gray-300 px-4 py-2 text-white">{entry.overallDay || 'No overall day information'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="border border-gray-300 px-4 py-2 text-white"><strong>Key Learnings:</strong></td>
+                                        <td className="border border-gray-300 px-4 py-2 text-white">{entry.keyLearnings || 'No key learnings mentioned'}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 ))
             )}
