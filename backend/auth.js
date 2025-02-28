@@ -12,23 +12,31 @@ const API_BASE_URL = process.env.NODE_ENV === 'development'
     : "https://call-journal.onrender.com";
 console.log("auth.js", API_BASE_URL);
 // 🔹 Session setup
-authRouter.use(session({
-    secret: "yourSecretKey",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI, // Use your MongoDB connection string
-        collectionName: "sessions",
-    }),
-    cookie: {
-        secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
-        httpOnly: true,
-        sameSite: "None", // Allow cross-origin cookies
-        maxAge: 24 * 60 * 60 * 1000 // 1 day
-    }
-}));
+if (process.env.NODE_ENV === 'production') {
+    authRouter.use(session({
+        secret: "yourSecretKey",
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URI, // Use your MongoDB connection string
+            collectionName: "sessions",
+        }),
+        cookie: {
+            secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
+            httpOnly: true,
+            sameSite: "None", // Allow cross-origin cookies
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        }
+    }));
+} else {
+    authRouter.use(session({
+        secret: "yourSecretKey",
+        resave: false,
+        saveUninitialized: false,
+    }));
+}
 
-// 🔹 Initialize Passport
+
 authRouter.use(passport.initialize());
 authRouter.use(passport.session());
 
@@ -79,6 +87,7 @@ authRouter.get("/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
         console.log("User authenticated successfully");
+        const user = req.user;
         if (process.env.NODE_ENV === 'development') {
             res.redirect("http://localhost:3000/");
         } else {
@@ -97,7 +106,11 @@ authRouter.get("/auth/logout", (req, res) => {
 // 🔹 Get Logged-in User
 authRouter.get("/auth/user", (req, res) => {
     console.log("User request received:", req.user);
-    res.json(req.user || null);
+    if (req.isAuthenticated()) {
+        return res.json(req.user); // Send the authenticated user
+    }
+    res.status(401).json({ message: "User not authenticated" });
+
 });
 
 module.exports = authRouter; 

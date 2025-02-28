@@ -51,6 +51,10 @@ app.put("/users/:id/settings", async (req, res) => {
 
 app.post("/calls", async (req, res) => {
     const { userId, callId, duration, transcript, phoneNumber } = req.body;
+    // Ensure userId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ success: false, error: "Invalid user ID" });
+    }
     const call = new Call({ userId, callId, duration, transcript, phoneNumber });
     await call.save();
     res.json(call);
