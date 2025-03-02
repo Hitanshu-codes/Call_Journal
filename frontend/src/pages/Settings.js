@@ -10,6 +10,10 @@ function Settings() {
     const [phoneNumber, setPhoneNumber] = useState("+911023456789")
     const { toast } = useToast()
     const { user } = useContext(UserContext)
+    const API_BASE_URL = process.env.NODE_ENV === 'development'
+        ? "http://localhost:5000"
+        : "https://call-journal.onrender.com";
+
 
     const callTimeId = useId()
     // const voiceTypeId = useId()
@@ -17,7 +21,7 @@ function Settings() {
     useEffect(() => {
         const fetchUserSettings = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/users/${user._id}`); // Replace `userId` dynamically
+                const response = await fetch(`${API_BASE_URL}/users/${user._id}`); // Replace `userId` dynamically
                 if (!response.ok) throw new Error("Failed to fetch settings");
 
                 const userData = await response.json();
@@ -42,7 +46,7 @@ function Settings() {
 
     const handleSave = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/users/${user._id}/settings`, { // Replace `userId` with actual user ID
+            const response = await fetch(`${API_BASE_URL}/users/${user._id}/settings`, { // Replace `userId` with actual user ID
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
