@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, use, useEffect } from "react"
 import { UserContext } from "../context/UserContext"
 import DailyJournal from "../components/DailyJournal"
 
@@ -7,12 +7,34 @@ const API_BASE_URL = process.env.NODE_ENV === 'development'
     ? "http://localhost:5000"
     : "https://call-journal.onrender.com";
 
+
 function Home() {
+
     const [customerNumber, setCustomerNumber] = useState("")
     const [customerName, setCustomerName] = useState("")
     const [callId, setCallId] = useState("")
     const [conversation, setConversation] = useState([])
     const { user } = useContext(UserContext);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${user._id}`); // Replace `userId` dynamically
+                if (!response.ok) throw new Error("Failed to fetch user data");
+
+                const userData = await response.json();
+                setCustomerNumber(userData.settings.phoneNumber);
+                setCustomerName(userData.name);
+
+
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
+
+
+    }, [user._id]);
 
     const handleCall = async () => {
         // Validate that the customer number starts with +91
@@ -74,8 +96,8 @@ function Home() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Daily Journal</h1>
-            <DailyJournal />
+            {/* <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Daily Journal</h1>
+            <DailyJournal /> */}
             {user && <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Hey {user.name}! Lets make a call for your daily journal</h1>}
             <div className="space-y-4">
                 <input

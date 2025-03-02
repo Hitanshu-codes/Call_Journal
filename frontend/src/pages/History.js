@@ -47,7 +47,7 @@ function History() {
         };
 
         fetchUserAndCalls();
-    }, []);
+    }, [API_BASE_URL]);
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen text-white">Loading...</div>; // Show loading state

@@ -110,7 +110,9 @@ authRouter.get("/auth/logout", (req, res) => {
 authRouter.get("/auth/user", (req, res) => {
     console.log("User request received:", req.user);
     if (req.isAuthenticated()) {
+        // console.log("user data from authentication", res.json(req.user));
         return res.json(req.user); // Send the authenticated user
+
     }
     res.status(401).json({ message: "User not authenticated" });
 
