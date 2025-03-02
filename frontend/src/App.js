@@ -9,6 +9,7 @@ import Settings from "./pages/Settings"
 import Login from "./pages/Login"
 import Toaster from "./components/Toaster"
 import "./index.css"
+import { ToastProvider } from "./context/ToastProvider"
 
 function App() {
   const [user, setUser] = useState(null)
@@ -48,21 +49,23 @@ function App() {
 
   return (
     <UserProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
-          <Navbar user={user} logout={logout} />
-          <main className="container mx-auto p-4 flex-grow">
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-              <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
-              <Route path="/monthly-summary" element={<ProtectedRoute><MonthlySummary /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-            </Routes>
-          </main>
-          <Toaster />
-        </div>
-      </Router>
+      <ToastProvider>
+        <Router>
+          <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+            <Navbar user={user} logout={logout} />
+            <main className="container mx-auto p-4 flex-grow">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+                <Route path="/monthly-summary" element={<ProtectedRoute><MonthlySummary /></ProtectedRoute>} />
+                <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              </Routes>
+            </main>
+            <Toaster />
+          </div>
+        </Router>
+      </ToastProvider>
     </UserProvider>
   )
 }

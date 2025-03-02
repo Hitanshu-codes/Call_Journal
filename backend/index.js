@@ -42,6 +42,13 @@ app.post("/users", async (req, res) => {
     }
     res.json(user);
 });
+app.get("/users/:id", async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        return res.status(404).json({ success: false, error: "User not found" });
+    }
+    res.json(user); // Return the entire user object, including settings
+});
 
 app.put("/users/:id/settings", async (req, res) => {
     const { phoneNumber, language, time } = req.body;
@@ -57,18 +64,7 @@ app.post("/calls", async (req, res) => {
         return res.status(400).json({ success: false, error: "Invalid user ID" });
     }
 
-    // const call = new Call({
-    //     userId,
-    //     callId,
-    //     duration,
-    //     transcript,
-    //     phoneNumber,
-    //     gratitude,
-    //     negatives,
-    //     positives,
-    //     overallDay,
-    //     keyLearnings
-    // });
+
 
     try {
         // await call.save();

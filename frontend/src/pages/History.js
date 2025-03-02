@@ -25,7 +25,7 @@ function History() {
 
                 const user = await userResponse.json();
                 const userId = user._id; // Get userId from user data
-                const googleId = user.googleId; // Get googleId from user data
+                // 
 
                 // Fetch calls for the user
                 const callsResponse = await fetch(`${API_BASE_URL}/users/${userId}/calls`, {

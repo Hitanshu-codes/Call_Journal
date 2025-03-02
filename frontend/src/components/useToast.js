@@ -1,20 +1,13 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useContext } from 'react';
+import { ToastContext } from '../context/ToastProvider';
 
-export function useToast() {
-    const [toasts, setToasts] = useState([])
-
-    const toast = useCallback(({ title, description, duration = 3000 }) => {
-        const id = Date.now()
-        setToasts((prevToasts) => [...prevToasts, { id, title, description, duration }])
-        return id
-    }, [])
-
-    const dismiss = useCallback((id) => {
-        setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id))
-    }, [])
-
-    return { toast, dismiss, toasts }
-}
+export const useToast = () => {
+    const context = useContext(ToastContext);
+    if (!context) {
+        throw new Error("useToast must be used within a ToastProvider");
+    }
+    return context;
+};
 
