@@ -51,8 +51,9 @@ passport.use(new Strategy({
 
     if (!user) {
         user = new User({
+
+            _id: new mongoose.Types.ObjectId(),
             googleId: profile.id,
-            userId: profile.id,
             name: profile.displayName,
             email: profile.emails[0].value
         });
