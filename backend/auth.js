@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
+const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 const { Strategy } = require("passport-google-oauth20");
 const User = require("./models/User");
