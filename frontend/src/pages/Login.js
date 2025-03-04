@@ -8,15 +8,27 @@ function Login() {
         : "https://call-journal.onrender.com"; // Production URL
     console.log("API_BASE_URL: from login.js", API_BASE_URL);
     useEffect(() => {
-        fetch(`${API_BASE_URL}/auth/user`, { credentials: "include" })
-            .then(res => {
+        const fetchUserData = async () => {
+            try {
+                const res = await fetch(`${API_BASE_URL}/auth/user`, {
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
                 }
-                return res.json();
-            })
-            .then(data => setUser(data))
-            .catch(error => console.error("Fetch error:", error)); // Log the error
+
+                const data = await res.json();
+                setUser(data);
+            } catch (error) {
+                console.error("Fetch error:", error); // Log the error
+            }
+        };
+
+        fetchUserData();
     }, [API_BASE_URL]);
 
     const login = () => {
