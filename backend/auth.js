@@ -52,6 +52,7 @@ passport.use(new Strategy({
     if (!user) {
         user = new User({
             googleId: profile.id,
+            userId: profile.id,
             name: profile.displayName,
             email: profile.emails[0].value
         });
