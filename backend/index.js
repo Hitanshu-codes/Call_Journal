@@ -70,7 +70,7 @@ const scheduleUserCall = (user) => {
         } catch (error) {
             console.error("Error making scheduled call:", error);
         }
-    });
+    }, { timezone: "Asia/Kolkata" });
 
     // Store the job reference
     job;
