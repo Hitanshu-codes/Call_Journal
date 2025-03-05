@@ -49,7 +49,7 @@ function Home() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ customerNumber, customerName }),
+                body: JSON.stringify({ customerNumber, customerName, uniqueId: user._id }),
             })
 
             const data = await response.json()
