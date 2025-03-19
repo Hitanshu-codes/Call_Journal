@@ -10,7 +10,7 @@ const User = require("./models/User");
 const authRouter = express.Router();
 const API_BASE_URL = process.env.NODE_ENV === 'development'
     ? "http://localhost:5000"
-    : "https://call-journal.duckdns.org";
+    : "https://call-journal.onrender.com";
 console.log("auth.js", API_BASE_URL);
 // 🔹 Session setup
 if (process.env.NODE_ENV === 'production') {
