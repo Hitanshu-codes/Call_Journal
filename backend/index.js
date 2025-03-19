@@ -13,7 +13,7 @@ const app = express();
 console.log("NODE_ENV:", process.env.NODE_ENV);
 const API_BASE_URL = process.env.NODE_ENV === 'development'
     ? "http://localhost:5000"
-    : "http://51.21.86.220:5000";
+    : "https://call-journal.duckdns.org";
 if (process.env.NODE_ENV === 'development') {
     app.use(cors({
         origin: 'http://localhost:3000', // Allow requests from this origin
