@@ -68,13 +68,13 @@ passport.use(new Strategy({
 }));
 
 passport.serializeUser((user, done) => {
-    console.log("Serializing user:", user);
+    // console.log("Serializing user:", user);
     done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
     const user = await User.findById(id);
-    console.log("Deserialized user:", user);
+    // console.log("Deserialized user:", user);
     done(null, user);
 });
 
@@ -89,7 +89,7 @@ authRouter.get("/auth/google",
 authRouter.get("/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
-        console.log("User authenticated successfully");
+        console.log("User authenticated successfully:", req.user);
         const user = req.user;
         if (process.env.NODE_ENV === 'development') {
             res.redirect("http://localhost:3000/");
@@ -111,7 +111,7 @@ authRouter.get("/auth/logout", (req, res) => {
 
 // 🔹 Get Logged-in User
 authRouter.get("/auth/user", (req, res) => {
-    console.log("User request received:", req.user);
+    // console.log("User request received:", req.user);
     if (req.isAuthenticated()) {
         // console.log("user data from authentication", res.json(req.user));
         return res.json(req.user); // Send the authenticated user
