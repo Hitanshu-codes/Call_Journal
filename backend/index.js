@@ -45,7 +45,7 @@ const scheduleUserCall = (user) => {
     // Parse the time setting to create a cron expression
     const [hour, minute] = time.split(':');
     const cronTime = `${minute} ${hour} * * *`; // Cron format: minute hour * * *
-    console.log("Scheduling call for user:", name, "at", cronTime); // Log scheduling time with user name
+    console.log("Scheduling call for user:", name, "with phone number:", phoneNumber, "at", cronTime); // Log scheduling time with user name
 
     // If a job already exists for this user, stop it
     if (scheduledJobs[_id]) {
