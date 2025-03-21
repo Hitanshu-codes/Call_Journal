@@ -39,12 +39,14 @@ app.use(authRouter);
 const scheduledJobs = {}; // Object to hold scheduled jobs
 
 const scheduleUserCall = (user) => {
-    const { time, phoneNumber, name } = user.settings;
+    const { time, phoneNumber } = user.settings;
+    const name = user.name;
     const _id = user._id; // Get user's settings
 
     // Parse the time setting to create a cron expression
     const [hour, minute] = time.split(':');
     const cronTime = `${minute} ${hour} * * *`; // Cron format: minute hour * * *
+    console.log(name);
     console.log("Scheduling call for user:", name, "with phone number:", phoneNumber, "at", cronTime); // Log scheduling time with user name
 
     // If a job already exists for this user, stop it
